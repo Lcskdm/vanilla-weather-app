@@ -25,7 +25,7 @@ function formatDate(timestamp) {
 }
 
 function displayTemperature(response) {
-  //console.log(response.data);
+  console.log(response.data);
   let temperatureElement = document.querySelector("#temperature");
   let cityElement = document.querySelector("#city");
   let descriptionElement = document.querySelector("#description");
@@ -54,7 +54,6 @@ function displayTemperature(response) {
 function search(city) {
   let apiKey = "3323502446bafe97fab5698ca4415d61";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
   axios.get(apiUrl).then(displayTemperature);
 }
 
