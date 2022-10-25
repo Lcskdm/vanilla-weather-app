@@ -61,21 +61,8 @@ a:hover {
 .weather-temperature img {
   margin-left: 5px;
   margin-right: 8px;
-  height: 64px;
-  width: 64px;
-}
-
-#temperature {
-  color: #202124;
-  font-size: 64px;
-  line-height: 1;
-  font-weight: 400;
-}
-
-#units {
-  position: relative;
-  font-size: 16px;
-  top: -34px;
+  height: 88px;
+  width: 88px;
 }
 
 .weather-temperature .active {
@@ -104,4 +91,17 @@ a:hover {
 
 .weather-forecast-temperature {
   font-size: 13px;
+}
+
+#temperature {
+  color: #202124;
+  font-size: 64px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+#units {
+  position: relative;
+  font-size: 16px;
+  top: -34px;
 }

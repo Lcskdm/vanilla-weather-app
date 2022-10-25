@@ -24,8 +24,7 @@ function formatDate(timestamp) {
   return `${day} ${hours}:${minutes}`;
 }
 
-function displayForecast(response) {
-  console.log(response.data.daily);
+function displayForecast() {
   let forecastElement = document.querySelector("#forecast");
 
   let forecastHTML = `<div class="row">`;
@@ -39,7 +38,7 @@ function displayForecast(response) {
     <div class="col-2">
       <div class="weather-forecast-date">${day}</div>
         <img
-          src="https://shecodes-assets.s3.amazonaws.com/api/weather/icons/snow-night.png"
+          src="http://openweathermap.org/img/wn/11n@2x.png"
           alt=""
           width="42"
         />
@@ -59,10 +58,9 @@ function displayForecast(response) {
 
 function getForecast(coordinates) {
   console.log(coordinates);
-  let apiKey = "fcd7aad0tb4foa5496ca53b7a57e92dd";
-  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${apiKey}&units=metric`;
+  let apiKey = "3323502446bafe97fab5698ca4415d61";
+  let apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
   console.log(apiUrl);
-  axios.get(apiUrl).then(displayForecast);
 }
 
 function displayTemperature(response) {
@@ -72,31 +70,31 @@ function displayTemperature(response) {
   let descriptionElement = document.querySelector("#description");
   let humidityElement = document.querySelector("#humidity");
   let windElement = document.querySelector("#wind");
-  let feelsLikeElement = document.querySelector("#feels-like");
   let dateElement = document.querySelector("#date");
   let iconElement = document.querySelector("#icon");
 
-  celsiusTemperature = response.data.temperature.current;
+  celsiusTemperature = response.data.main.temp;
+  //access to global variable, move inside actuale celsius temperature
 
   temperatureElement.innerHTML = Math.round(celsiusTemperature);
-  cityElement.innerHTML = response.data.city;
-  descriptionElement.innerHTML = response.data.condition.description;
-  humidityElement.innerHTML = response.data.temperature.humidity;
+  cityElement.innerHTML = response.data.name;
+  descriptionElement.innerHTML = response.data.weather[0].description;
+  humidityElement.innerHTML = response.data.main.humidity;
   windElement.innerHTML = Math.round(response.data.wind.speed);
-  feelsLikeElement.innerHTML = Math.round(response.data.temperature.feels_like);
-  dateElement.innerHTML = formatDate(response.data.time * 1000);
+  dateElement.innerHTML = formatDate(response.data.dt * 1000);
   iconElement.setAttribute(
     "src",
-    `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png`
+    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
-  iconElement.setAttribute("alt", response.data.condition.icon);
+  //setAttribute - change attribute of the element
+  iconElement.setAttribute("alt", response.data.weather[0].description);
 
-  getForecast(response.data.coordinates);
+  getForecast(response.data.coord);
 }
 
 function search(city) {
-  let apiKey = "fcd7aad0tb4foa5496ca53b7a57e92dd";
-  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+  let apiKey = "3323502446bafe97fab5698ca4415d61";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(displayTemperature);
 }
 
@@ -106,7 +104,6 @@ function handleSubmit(event) {
   search(cityInputElement.value);
   celsiusLink.classList.add("active");
   fahrenheitLink.classList.remove("active");
-  //classList - read-only property of element, manipulate the class list
 }
 
 function displayFahrenheitTemperature(event) {
@@ -142,4 +139,6 @@ fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
-search("Kyiv");
+search("New York");
+displayForecast();
+//placed here temporary, because we don't use API call for now
