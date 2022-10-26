@@ -40,8 +40,6 @@ function displayForecast(response) {
   let forecastElement = document.querySelector("#forecast");
 
   let forecastHTML = `<div class="row">`;
-  //open the row and place HTML code inside
-  //forEach - adding a loop
   forecast.forEach(function (forecastDay, index) {
     if (index < 6) {
       forecastHTML =
@@ -68,15 +66,14 @@ function displayForecast(response) {
   });
 
   forecastHTML = forecastHTML + `</div>`;
-  //close the row!
   forecastElement.innerHTML = forecastHTML;
-  //innerHTML may contain HTML code!
 }
 
 function getForecast(coordinates) {
   console.log(coordinates);
   let apiKey = "fcd7aad0tb4foa5496ca53b7a57e92dd";
   let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${apiKey}&units=metric`;
+  //metric to imperial - forecast temperature in fahrenheit
   console.log(apiUrl);
   axios.get(apiUrl).then(displayForecast);
 }
@@ -113,6 +110,7 @@ function displayTemperature(response) {
 function search(city) {
   let apiKey = "fcd7aad0tb4foa5496ca53b7a57e92dd";
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+  //metric to imperial - temperature in fahrenheit (don't forget to replace °C in HTML)
   axios.get(apiUrl).then(displayTemperature);
 }
 
@@ -120,42 +118,9 @@ function handleSubmit(event) {
   event.preventDefault();
   let cityInputElement = document.querySelector("#city-input");
   search(cityInputElement.value);
-  celsiusLink.classList.add("active");
-  fahrenheitLink.classList.remove("active");
-  //classList - read-only property of element, manipulate the class list
 }
-
-function displayFahrenheitTemperature(event) {
-  event.preventDefault();
-
-  let temperatureElement = document.querySelector("#temperature");
-
-  celsiusLink.classList.remove("active");
-  //remove the active class from C
-  fahrenheitLink.classList.add("active");
-  //add the active class to F
-  let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
-  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
-}
-
-function displayCelsiusTemperature(event) {
-  event.preventDefault();
-
-  celsiusLink.classList.add("active");
-  fahrenheitLink.classList.remove("active");
-  let temperatureElement = document.querySelector("#temperature");
-  temperatureElement.innerHTML = Math.round(celsiusTemperature);
-}
-
-let celsiusTemperature = null;
 
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
-
-let fahrenheitLink = document.querySelector("#fahrenheit-link");
-fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
-
-let celsiusLink = document.querySelector("#celsius-link");
-celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
 search("Kyiv");
